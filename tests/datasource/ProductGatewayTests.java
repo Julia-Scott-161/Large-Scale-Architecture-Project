@@ -8,12 +8,12 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.Set;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class ProductGatewayTests {
 
     @Test
-    public void ProductGatewayTest() {
+    public void SetCodecTest() {
         ProductType type = ProductType.AudioTrack;
         String sku = "000000000000";
         String name = "Test Product";
@@ -33,5 +33,15 @@ public class ProductGatewayTests {
         //Test that the actualBitmask matches the expectedBitmask
         assertEquals(expectedBitmask, actualBitmask);
 
+    }
+
+    // Tests ran with temporary visibility change to test the calculateBitmask()
+    // and getSupportedCodecsSet() methods directly
+    public void calculateBitmaskLogicTest() {
+        Set<AudioCodec> codecs = EnumSet.of(AudioCodec.MP3, AudioCodec.AAC);
+        //testing with 1 enum supported
+        Set<AudioCodec> minimalCodecs = EnumSet.of(AudioCodec.AAC);
+        //testing with all enums supported
+        Set<AudioCodec> maxCodecs = EnumSet.of(AudioCodec.MP3, AudioCodec.AAC, AudioCodec.FLAC, AudioCodec.WAV);
     }
 }
