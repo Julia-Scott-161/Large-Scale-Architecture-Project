@@ -1,29 +1,34 @@
 package datasource;
 
 import domain.AudioCodec;
-import org.junit.jupiter.api.Test;
+import domain.AudioTrack;
+import domain.VideoStreaming;
+import org.junit.Test;
+
+import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.Set;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.assertEquals;
 
 public class ProductGatewayTests {
 
     @Test
-    public void testCodecBitmask() {
-        //create the set of AudioCodecs for testing purposes
-        /*
-         * Expected bitmask for reference
-         * MP3 = 1
-         * AAC = 2
-         * FLAC = 3
-         * WAV = 4
-         */
-        //Set<AudioCodec> codecs = ProductGateway.getCodecs();
+    public void ProductGatewayTest() {
+        ProductType type = ProductType.AudioTrack;
+        String sku = "000000000000";
+        String name = "Test Product";
+        double basePrice = 15.99;
+        long size = 50;
+        boolean hasLyrics = false;
         Set<AudioCodec> codecs = EnumSet.of(AudioCodec.MP3, AudioCodec.AAC);
+        ArrayList<VideoStreaming> supportedStreamingServices = new ArrayList<>();
+
+        ProductGateway gateway = new ProductGateway(type, sku, name, basePrice, size, hasLyrics, codecs, supportedStreamingServices);
+        //create the expected bitmask for testing purposes
         int expectedBitmask = 3; //MP3 (1) + AAC (2)
 
         //call the set function that is in ProductGateway
-        int actualBitmask = ProductGateway.setSupportedCodecs(expectedBitmask);
+        int actualBitmask = gateway.setCodecs(codecs);
 
         //Test that the actualBitmask matches the expectedBitmask
         assertEquals(expectedBitmask, actualBitmask);
