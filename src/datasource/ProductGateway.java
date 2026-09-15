@@ -4,6 +4,9 @@ import domain.AudioCodec;
 import domain.Cost;
 import domain.VideoStreaming;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -29,7 +32,6 @@ public class ProductGateway {
     public static List<ProductGateway> findAllRows() {
         return null;
     }
-
 
     public long getId() {
         return id;
@@ -121,15 +123,21 @@ public class ProductGateway {
 
     private Set<AudioCodec> getSupportedCodecsSet(int mask) {
         Set<AudioCodec> codecs = new java.util.HashSet<>();
-        // TODO set the codecs from the mask
-        // Yes, you will need to see the enum that is in the domain layer. The domain is really the center of the
-        // world and exposing read only values isn't really terrible
-
+        for (AudioCodec codec : AudioCodec.values()) {
+            //check if the bit at the current codec's position is set to 1
+            if ((mask & (1 << codec.ordinal())) != 0) {
+                codecs.add(codec);
+            }
+        }
         return codecs;
     }
 
     private int calculateBitmask(Set<AudioCodec> codecs) {
-        // TODO convert the codes to a bit mask
-        return 0;
+        int bitmask = 0;
+        for (AudioCodec codec : codecs) {
+            //ordinal() returns the position of an enum as it's declared in its enum type
+            bitmask |= (1 << codec.ordinal());
+        }
+        return bitmask;
     }
 }
