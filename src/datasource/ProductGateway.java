@@ -65,11 +65,6 @@ public class ProductGateway {
         return codecs;
     }
 
-    public int setCodecs(Set<AudioCodec> codecs) {
-        this.codecs = codecs;
-        return calculateBitmask(codecs);
-    }
-
     public boolean isHasSubtitles() {
         return hasSubtitles;
     }

@@ -1,47 +1,85 @@
 package datasource;
 
 import domain.AudioCodec;
-import domain.AudioTrack;
 import domain.VideoStreaming;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.HashSet;
 import java.util.Set;
 import static org.junit.Assert.*;
 
 public class ProductGatewayTests {
 
+    //generic ProductGateway for testing
+    ProductType type = ProductType.AudioTrack;
+    String sku = "000000000000";
+    String name = "Test Product";
+    double basePrice = 15.99;
+    long size = 50;
+    boolean hasLyrics = false;
+    Set<AudioCodec> codecs;
+    ArrayList<VideoStreaming> supportedStreamingServices = new ArrayList<>();
+
+
+    /// The following tests were done to check calculateBitmask() and getSupportedCodecSet(int mask)'s
+    /// functionality, by temporarily switching the functions to public. After the tests passed, the
+    /// functions became private again.
+    /*
     @Test
-    public void SetCodecTest() {
-        ProductType type = ProductType.AudioTrack;
-        String sku = "000000000000";
-        String name = "Test Product";
-        double basePrice = 15.99;
-        long size = 50;
-        boolean hasLyrics = false;
-        Set<AudioCodec> codecs = EnumSet.of(AudioCodec.MP3, AudioCodec.AAC);
-        ArrayList<VideoStreaming> supportedStreamingServices = new ArrayList<>();
-
+    public void CodecBitmaskEdgesTest() {
+        //Set is empty
+        codecs = Set.of();
         ProductGateway gateway = new ProductGateway(type, sku, name, basePrice, size, hasLyrics, codecs, supportedStreamingServices);
-        //create the expected bitmask for testing purposes
-        int expectedBitmask = 3; //MP3 (1) + AAC (2)
-
-        //call the set function that is in ProductGateway
+        int expectedBitmask = 0;
         int actualBitmask = gateway.setCodecs(codecs);
+        assertEquals(expectedBitmask, actualBitmask);
 
-        //Test that the actualBitmask matches the expectedBitmask
+        //Set is full
+        codecs = Set.of(AudioCodec.MP3, AudioCodec.AAC, AudioCodec.FLAC, AudioCodec.WAV);
+        expectedBitmask = 15;
+        actualBitmask = gateway.setCodecs(codecs);
         assertEquals(expectedBitmask, actualBitmask);
 
     }
 
-    // Tests ran with temporary visibility change to test the calculateBitmask()
-    // and getSupportedCodecsSet() methods directly
-    public void calculateBitmaskLogicTest() {
-        Set<AudioCodec> codecs = EnumSet.of(AudioCodec.MP3, AudioCodec.AAC);
-        //testing with 1 enum supported
-        Set<AudioCodec> minimalCodecs = EnumSet.of(AudioCodec.AAC);
-        //testing with all enums supported
-        Set<AudioCodec> maxCodecs = EnumSet.of(AudioCodec.MP3, AudioCodec.AAC, AudioCodec.FLAC, AudioCodec.WAV);
+    @Test
+    public void SingleCodecBitmaskTest() {
+        codecs = Set.of(AudioCodec.MP3);
+        ProductGateway gateway = new ProductGateway(type, sku, name, basePrice, size, hasLyrics, codecs, supportedStreamingServices);
+        int expectedBitmask = 1;
+        int actualBitmask = gateway.setCodecs(codecs);
+        assertEquals(expectedBitmask, actualBitmask);
+        codecs = Set.of(AudioCodec.AAC);
+        expectedBitmask = 2;
+        actualBitmask = gateway.setCodecs(codecs);
+        assertEquals(expectedBitmask, actualBitmask);
+        codecs = Set.of(AudioCodec.FLAC);
+        expectedBitmask = 4;
+        actualBitmask = gateway.setCodecs(codecs);
+        assertEquals(expectedBitmask, actualBitmask);
+        codecs = Set.of(AudioCodec.WAV);
+        expectedBitmask = 8;
+        actualBitmask = gateway.setCodecs(codecs);
+        assertEquals(expectedBitmask, actualBitmask);
+
     }
+
+    @Test
+    public void getSupportedCodecsTest() {
+        codecs = Set.of();
+        ProductGateway gateway = new ProductGateway(type, sku, name, basePrice, size, hasLyrics, codecs, supportedStreamingServices);
+        //Mask 0 = Empty Set
+        assertTrue(gateway.getSupportedCodecsSet(0).isEmpty());
+        //Mask 3 = MP3 + AAC
+        Set<AudioCodec> expectedSet = Set.of(AudioCodec.MP3, AudioCodec.AAC);
+        Set<AudioCodec> actualSet = gateway.getSupportedCodecsSet(3);
+        assertEquals(expectedSet, actualSet);
+        //Mask 15 = MP3 + AAC + FLAV + WAV
+        expectedSet = Set.of(AudioCodec.MP3, AudioCodec.AAC, AudioCodec.FLAC, AudioCodec.WAV);
+        actualSet = gateway.getSupportedCodecsSet(15);
+        assertEquals(expectedSet, actualSet);
+    }
+    */
 }
