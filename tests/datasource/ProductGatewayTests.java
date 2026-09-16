@@ -32,15 +32,13 @@ public class ProductGatewayTests {
         //Set is empty
         codecs = Set.of();
         ProductGateway gateway = new ProductGateway(type, sku, name, basePrice, size, hasLyrics, codecs, supportedStreamingServices);
-        int expectedBitmask = 0;
         int actualBitmask = gateway.calculateBitmask(codecs);
-        assertEquals(expectedBitmask, actualBitmask);
+        assertEquals(0, actualBitmask);
 
         //Set is full
         codecs = Set.of(AudioCodec.MP3, AudioCodec.AAC, AudioCodec.FLAC, AudioCodec.WAV);
-        expectedBitmask = 15;
         actualBitmask = gateway.calculateBitmask(codecs);
-        assertEquals(expectedBitmask, actualBitmask);
+        assertEquals(15, actualBitmask);
 
     }
 
@@ -48,22 +46,17 @@ public class ProductGatewayTests {
     public void SingleCodecBitmaskTest() {
         codecs = Set.of(AudioCodec.MP3);
         ProductGateway gateway = new ProductGateway(type, sku, name, basePrice, size, hasLyrics, codecs, supportedStreamingServices);
-        int expectedBitmask = 1;
         int actualBitmask = gateway.calculateBitmask(codecs);
-        assertEquals(expectedBitmask, actualBitmask);
+        assertEquals(1, actualBitmask);
         codecs = Set.of(AudioCodec.AAC);
-        expectedBitmask = 2;
         actualBitmask = gateway.calculateBitmask(codecs);
-        assertEquals(expectedBitmask, actualBitmask);
+        assertEquals(2, actualBitmask);
         codecs = Set.of(AudioCodec.FLAC);
-        expectedBitmask = 4;
         actualBitmask = gateway.calculateBitmask(codecs);
-        assertEquals(expectedBitmask, actualBitmask);
+        assertEquals(4, actualBitmask);
         codecs = Set.of(AudioCodec.WAV);
-        expectedBitmask = 8;
         actualBitmask = gateway.calculateBitmask(codecs);
-        assertEquals(expectedBitmask, actualBitmask);
-
+        assertEquals(8, actualBitmask);
     }
 
 /*
@@ -84,16 +77,16 @@ public class ProductGatewayTests {
     }
     */
 
-//    @Test
-//    public void getGeneratedID() {
-//        //declare mock gateway instance
-//        ProductGateway gateway1 = new ProductGateway(type, sku, name, basePrice, size, hasLyrics, codecs, supportedStreamingServices);
-//        ProductGateway gateway2 = new ProductGateway(type, sku, name, basePrice, size, hasLyrics, codecs, supportedStreamingServices);
-//
-//        //generated ID should be more than 0
-//        assert(gateway1.getId() > 0);
-//        //generated ID should be unique
-//        assertNotEquals(gateway1.getId(), gateway2.getId());
-//    }
+    @Test
+    public void getGeneratedID() {
+        //declare mock gateway instance
+        ProductGateway gateway1 = new ProductGateway(type, sku, name, basePrice, size, hasLyrics, codecs, supportedStreamingServices);
+        ProductGateway gateway2 = new ProductGateway(type, sku, name, basePrice, size, hasLyrics, codecs, supportedStreamingServices);
+
+        //generated ID should be more than 0
+        assert(gateway1.getId() > 0);
+        //generated ID should be unique
+        assertNotEquals(gateway1.getId(), gateway2.getId());
+    }
 
 }
