@@ -4,9 +4,10 @@ import domain.AudioCodec;
 import domain.VideoStreaming;
 import org.junit.Test;
 
+import java.sql.Connection;
 import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.HashSet;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.Set;
 import static org.junit.Assert.*;
 
@@ -80,6 +81,7 @@ public class ProductGatewayTests {
     @Test
     public void getGeneratedID() {
         //declare mock gateway instance
+        codecs = Set.of(AudioCodec.WAV);
         ProductGateway gateway1 = new ProductGateway(type, sku, name, basePrice, size, hasLyrics, codecs, supportedStreamingServices);
         ProductGateway gateway2 = new ProductGateway(type, sku, name, basePrice, size, hasLyrics, codecs, supportedStreamingServices);
 
