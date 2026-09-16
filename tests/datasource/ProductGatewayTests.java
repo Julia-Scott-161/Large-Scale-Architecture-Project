@@ -26,20 +26,20 @@ public class ProductGatewayTests {
     /// The following tests were done to check calculateBitmask() and getSupportedCodecSet(int mask)'s
     /// functionality, by temporarily switching the functions to public. After the tests passed, the
     /// functions became private again.
-    /*
+
     @Test
     public void CodecBitmaskEdgesTest() {
         //Set is empty
         codecs = Set.of();
         ProductGateway gateway = new ProductGateway(type, sku, name, basePrice, size, hasLyrics, codecs, supportedStreamingServices);
         int expectedBitmask = 0;
-        int actualBitmask = gateway.setCodecs(codecs);
+        int actualBitmask = gateway.calculateBitmask(codecs);
         assertEquals(expectedBitmask, actualBitmask);
 
         //Set is full
         codecs = Set.of(AudioCodec.MP3, AudioCodec.AAC, AudioCodec.FLAC, AudioCodec.WAV);
         expectedBitmask = 15;
-        actualBitmask = gateway.setCodecs(codecs);
+        actualBitmask = gateway.calculateBitmask(codecs);
         assertEquals(expectedBitmask, actualBitmask);
 
     }
@@ -49,23 +49,24 @@ public class ProductGatewayTests {
         codecs = Set.of(AudioCodec.MP3);
         ProductGateway gateway = new ProductGateway(type, sku, name, basePrice, size, hasLyrics, codecs, supportedStreamingServices);
         int expectedBitmask = 1;
-        int actualBitmask = gateway.setCodecs(codecs);
+        int actualBitmask = gateway.calculateBitmask(codecs);
         assertEquals(expectedBitmask, actualBitmask);
         codecs = Set.of(AudioCodec.AAC);
         expectedBitmask = 2;
-        actualBitmask = gateway.setCodecs(codecs);
+        actualBitmask = gateway.calculateBitmask(codecs);
         assertEquals(expectedBitmask, actualBitmask);
         codecs = Set.of(AudioCodec.FLAC);
         expectedBitmask = 4;
-        actualBitmask = gateway.setCodecs(codecs);
+        actualBitmask = gateway.calculateBitmask(codecs);
         assertEquals(expectedBitmask, actualBitmask);
         codecs = Set.of(AudioCodec.WAV);
         expectedBitmask = 8;
-        actualBitmask = gateway.setCodecs(codecs);
+        actualBitmask = gateway.calculateBitmask(codecs);
         assertEquals(expectedBitmask, actualBitmask);
 
     }
 
+/*
     @Test
     public void getSupportedCodecsTest() {
         codecs = Set.of();
@@ -82,4 +83,17 @@ public class ProductGatewayTests {
         assertEquals(expectedSet, actualSet);
     }
     */
+
+//    @Test
+//    public void getGeneratedID() {
+//        //declare mock gateway instance
+//        ProductGateway gateway1 = new ProductGateway(type, sku, name, basePrice, size, hasLyrics, codecs, supportedStreamingServices);
+//        ProductGateway gateway2 = new ProductGateway(type, sku, name, basePrice, size, hasLyrics, codecs, supportedStreamingServices);
+//
+//        //generated ID should be more than 0
+//        assert(gateway1.getId() > 0);
+//        //generated ID should be unique
+//        assertNotEquals(gateway1.getId(), gateway2.getId());
+//    }
+
 }
