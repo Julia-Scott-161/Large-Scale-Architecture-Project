@@ -25,8 +25,8 @@ public class ProductGatewayTests {
 
     /// The following tests were done to check calculateBitmask() and getSupportedCodecSet(int mask)'s
     /// functionality, by temporarily switching the functions to public. After the tests passed, the
-    /// functions became private again.
-
+    /// functions become private again.
+    /*
     @Test
     public void CodecBitmaskEdgesTest() {
         //Set is empty
@@ -59,7 +59,6 @@ public class ProductGatewayTests {
         assertEquals(8, actualBitmask);
     }
 
-/*
     @Test
     public void getSupportedCodecsTest() {
         codecs = Set.of();
@@ -75,8 +74,7 @@ public class ProductGatewayTests {
         actualSet = gateway.getSupportedCodecsSet(15);
         assertEquals(expectedSet, actualSet);
     }
-    */
-
+*/
     @Test
     public void getGeneratedID() {
         //declare mock gateway instance

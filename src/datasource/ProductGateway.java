@@ -124,18 +124,20 @@ public class ProductGateway {
     private Set<AudioCodec> getSupportedCodecsSet(int mask) {
         Set<AudioCodec> codecs = new java.util.HashSet<>();
         for (AudioCodec codec : AudioCodec.values()) {
-
+            int shift = 1 << codec.ordinal();
+            if ((mask & shift) != 0) {
+                codecs.add(codec);
+            }
         }
         return codecs;
     }
 
-    public int calculateBitmask(Set<AudioCodec> codecs) {
+    private int calculateBitmask(Set<AudioCodec> codecs) {
         int bitmask = 0;
         for (AudioCodec codec : codecs) {
             // ordinal takes the specific placement of codec in the enum
             // (so that it registers the different types)
             bitmask |= (1 << codec.ordinal());
-            System.out.println(bitmask);
         }
         return bitmask;
     }
