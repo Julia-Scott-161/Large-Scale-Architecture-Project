@@ -131,8 +131,10 @@ public class ProductGateway {
 
     public int calculateBitmask(Set<AudioCodec> codecs) {
         int bitmask = 0;
-        for (int i = 0; i < Set.of(codecs).size(); i++) {
-            bitmask |= (1 << i);
+        for (AudioCodec codec : codecs) {
+            // ordinal takes the specific placement of codec in the enum
+            // (so that it registers the different types)
+            bitmask |= (1 << codec.ordinal());
             System.out.println(bitmask);
         }
         return bitmask;
