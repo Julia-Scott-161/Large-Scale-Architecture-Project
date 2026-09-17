@@ -103,6 +103,10 @@ public class ProductGatewayTests {
             return "Object created with id: " + productGateway.getId();
             });
         assertEquals("Object created with id: 9", result);
+
+        //TODO - Add case where type is not AudioTrack
+        //TODO - add case where ID is 0
+        //TODO - add case where ID does not exist
     }
 
     @Test

@@ -97,11 +97,9 @@ public class ProductGateway {
         this.codecs = codecs;
         this.supportedStreamingServices = supportedStreamingServices;
 
-        // TODO use INSERT to put this row into the table
         String url = "jdbc:sqlite:Gateway.sqlite";
         try (Connection conn = DriverManager.getConnection(url)) {
             if (conn != null) {
-                System.out.println("Connection successful");
 
                 String sql = "INSERT INTO ProductGateway "
                             + "(sku, name, basePrice, size, hasLyrics, codecs, type)"
@@ -127,7 +125,6 @@ public class ProductGateway {
                 //TODO - Does this need to close? What if we put insert.close() after this?
                 set.next();
                 id = set.getInt("maxID");
-                System.out.print(id);
 
                 if(type == ProductType.Electronics){
                     insertSupportedServices(conn);
@@ -169,7 +166,9 @@ public class ProductGateway {
                 select.setLong(1, id);
 
                 // TODO fill all of the instance variables from that select statement
-                ResultSet set = select.executeQuery();
+                //ResultSet set = select.executeQuery();
+                //changed, untested
+                select.execute();
                 select.close();
             }
         }
@@ -189,7 +188,10 @@ public class ProductGateway {
     private Set<AudioCodec> getSupportedCodecsSet(int mask) {
         Set<AudioCodec> codecs = new java.util.HashSet<>();
         for (AudioCodec codec : AudioCodec.values()) {
-
+            int shift = 1 << codec.ordinal();
+            if ((mask & shift) != 0) {
+                codecs.add(codec);
+            }
         }
         return codecs;
     }
