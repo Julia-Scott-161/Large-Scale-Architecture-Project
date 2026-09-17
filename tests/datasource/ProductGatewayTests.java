@@ -10,8 +10,10 @@ import static org.junit.Assert.*;
 
 public class ProductGatewayTests {
 
-    //generic ProductGateway for testing
-    ProductType type = ProductType.AudioTrack;
+    //generic ProductGateway for AudioTrack testing
+    //ProductType type = ProductType.AudioTrack;
+    //Type for testing DatasourceTypeMismatch
+    ProductType type = ProductType.VideoStreaming;
     String sku = "000000000001";
     String name = "Test Product";
     double basePrice = 15.99;
@@ -96,7 +98,6 @@ public class ProductGatewayTests {
     @Test
     public void WrongTypeThrowException() {
             long testId = 1;
-            //TODO - how can we guarantee that it will be a type that's not AudioTrack?
             ProductGateway resultThrowsException = ProductGateway.findAndBuild(testId,
                     productGateway -> {return productGateway;});
             assert(resultThrowsException != null);
