@@ -140,7 +140,7 @@ public class ProductGateway {
     }
 
     public void insertSupportedServices(Connection connection) throws SQLException {
-        //Separate Table necessary for many to many relationship
+        //Separate Table necessary for many-to-many relationship
         String supportedServiceSql = "INSERT INTO SupportedServices (ElectronicsID, VideoStreamingID) VALUES (?, ?)";
         PreparedStatement insertService = connection.prepareStatement(supportedServiceSql);
         for(VideoStreaming service : supportedStreamingServices){
@@ -166,8 +166,6 @@ public class ProductGateway {
                 select.setLong(1, id);
 
                 // TODO fill all of the instance variables from that select statement
-                //ResultSet set = select.executeQuery();
-                //changed, untested
                 select.execute();
                 select.close();
             }
@@ -180,8 +178,6 @@ public class ProductGateway {
 
     public static <T> T findAndBuild(long id, Function<ProductGateway, T> domainBuilder) {
         ProductGateway gateway = new ProductGateway(id);
-
-        // TODO call the domainBuilder to get the object and return it
         return domainBuilder.apply(gateway);
     }
 

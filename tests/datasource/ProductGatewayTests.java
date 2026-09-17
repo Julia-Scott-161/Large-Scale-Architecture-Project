@@ -1,9 +1,6 @@
 package datasource;
 
-import domain.AudioCodec;
-import domain.AudioTrack;
-import domain.Cost;
-import domain.VideoStreaming;
+import domain.*;
 import org.junit.Test;
 
 import java.sql.*;
@@ -15,7 +12,7 @@ public class ProductGatewayTests {
 
     //generic ProductGateway for testing
     ProductType type = ProductType.AudioTrack;
-    String sku = "000000000000";
+    String sku = "000000000001";
     String name = "Test Product";
     double basePrice = 15.99;
     long size = 50;
@@ -41,10 +38,12 @@ public class ProductGatewayTests {
 //        codecs = Set.of(AudioCodec.MP3, AudioCodec.AAC, AudioCodec.FLAC, AudioCodec.WAV);
 //        actualBitmask = gateway.calculateBitmask(codecs);
 //        assertEquals(15, actualBitmask);
-
-    //TODO - What if codec is given out of order? like, codecs = Set.of(AudioCodec.FLAC, AudioCodec.MP3);
 //
-//    }
+//        //set is declared out of order
+//        codecs = Set.of(AudioCodec.AAC, AudioCodec.MP3);
+//        actualBitmask = gateway.calculateBitmask(codecs);
+//        assertEquals(3, actualBitmask);
+//        }
 //
 //    @Test
 //    public void SingleCodecBitmaskTest() {
@@ -94,19 +93,77 @@ public class ProductGatewayTests {
         assertNotEquals(gateway1.getId(), gateway2.getId());
     }
 
+    @Test
+    public void WrongTypeThrowException() {
+            long testId = 1;
+            //TODO - how can we guarantee that it will be a type that's not AudioTrack?
+            ProductGateway resultThrowsException = ProductGateway.findAndBuild(testId,
+                    productGateway -> {return productGateway;});
+            assert(resultThrowsException != null);
+    }
 
     @Test
     public void DomainBuilderTest() {
         long testID = 9;
 
-        String result = ProductGateway.findAndBuild(testID, productGateway -> {
+        //basic test
+        String resultWithId = ProductGateway.findAndBuild(testID, productGateway -> {
             return "Object created with id: " + productGateway.getId();
             });
-        assertEquals("Object created with id: 9", result);
+        assertEquals("Object created with id: 9", resultWithId);
 
-        //TODO - Add case where type is not AudioTrack
-        //TODO - add case where ID is 0
-        //TODO - add case where ID does not exist
+        //TODO - case where ID is 0
+        String resultWithZeroId = ProductGateway.findAndBuild(0, productGateway -> {
+            return "Object created with id: " + productGateway.getId();
+        });
+
+
+        //TODO - case where ID does not exist
+        String resultWithMaxId = ProductGateway.findAndBuild(99, productGateway -> {
+            return "Object created with id: " + productGateway.getId();
+        });
+
+    }
+
+    @Test
+    public void getInstanceVariablesFromSelect() {
+        long testID = 1;
+        //TODO - getSku()
+        String resultWithSku = ProductGateway.findAndBuild(testID, productGateway -> {
+            return "Object created with SKU: " + productGateway.getSku();
+        });
+        assertEquals("Object created with SKU: 000000000001", resultWithSku);
+
+        //TODO - getName()
+        String resultWithName = ProductGateway.findAndBuild(testID, productGateway -> {
+            return "Object created with name: " + productGateway.getName();
+        });
+        assertEquals("Object created with name: Test Product", resultWithName);
+
+        //TODO - getBasePrice
+        String resultWithBasePrice = ProductGateway.findAndBuild(testID, productGateway -> {
+            return "Object created with price: " + productGateway.getBasePrice();
+        });
+        assertEquals("Object created with price: 15.99", resultWithBasePrice);
+
+        //TODO - getSize()
+        String resultWithSize = ProductGateway.findAndBuild(testID, productGateway -> {
+            return "Object created with size: " + productGateway.getSize();
+        });
+        assertEquals("Object created with size: 50", resultWithSize);
+
+        //TODO - isHasLyrics()
+        String resultWithLyrics = ProductGateway.findAndBuild(testID, productGateway -> {
+            return "Object created with lyrics: " + productGateway.isHasLyrics();
+        });
+        assertEquals("Object created with lyrics: 0", resultWithLyrics);
+
+        //TODO - getCodecs()
+        codecs = Set.of(AudioCodec.MP3);
+        String resultWithCodecs = ProductGateway.findAndBuild(testID, productGateway -> {
+            return "Object created with codecs: " + productGateway.getCodecs();
+        });
+        assertEquals("Object created with codecs: 1", resultWithCodecs);
     }
 
     @Test
