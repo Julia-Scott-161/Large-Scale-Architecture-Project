@@ -104,5 +104,10 @@ public class ProductGatewayTests {
             });
         assertEquals("Object created with id: 9", result);
     }
+
+    @Test
+    public void SupportedServicesTest(){
+        //TODO test to ensure streaming supported services are properly stored
+    }
 }
 
