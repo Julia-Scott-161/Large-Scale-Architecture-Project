@@ -48,8 +48,19 @@ public class AudioTrack extends DigitalMedia {
      */
     static AudioTrack builder(ProductGateway gateway) throws DatasourceTypeMismatch{
         // TODO make sure that the gateway you are given represents an audio track.  If not, throw the exception
-        AudioTrack audioTrack = new AudioTrack();
+        if (gateway.getType() != ProductType.AudioTrack) {
+            throw new DatasourceTypeMismatch();
+        }
+        Cost price = new Cost(gateway.getBasePrice());
+        AudioTrack audioTrack = new AudioTrack(
         // TODO fill in everything from the gateway
+                gateway.getSku(),
+                gateway.getName(),
+                price,
+                gateway.getSize(),
+                gateway.isHasLyrics(),
+                gateway.getCodecs()
+        );
         return audioTrack;
     }
 }

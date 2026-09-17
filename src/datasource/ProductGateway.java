@@ -124,17 +124,33 @@ public class ProductGateway {
                 /// look more into different options of doing this
                 PreparedStatement stmt = conn.prepareStatement("SELECT MAX(id) AS maxID FROM ProductGateway");
                 ResultSet set = stmt.executeQuery();
+                //TODO - Does this need to close? What if we put insert.close() after this?
                 set.next();
                 id = set.getInt("maxID");
                 System.out.print(id);
+
+                if(type == ProductType.Electronics){
+                    insertSupportedServices(conn);
+                }
+
             }
         }
         catch (SQLException e) {
             e.printStackTrace();
         }
 
-
         // TODO now you have to store the many to many relationship
+    }
+
+    public void insertSupportedServices(Connection connection) throws SQLException {
+        //Separate Table necessary for many to many relationship
+        String supportedServiceSql = "INSERT INTO SupportedServices (ElectronicsID, VideoStreamingID) VALUES (?, ?)";
+        PreparedStatement insertService = connection.prepareStatement(supportedServiceSql);
+        for(VideoStreaming service : supportedStreamingServices){
+            insertService.setLong(1, this.getId());
+            insertService.setLong(2, service.getId());
+            insertService.executeUpdate();
+        }
     }
 
     /**
@@ -142,15 +158,32 @@ public class ProductGateway {
      * @param id
      */
     private ProductGateway(long id) {
-        // TODO build the right select statement
-        // TODO fill all of the instance variables from that select statement
+        String url = "jdbc:sqlite:Gateway.sqlite";
+        this.id = id;
+        try (Connection conn = DriverManager.getConnection(url)) {
+            if (conn != null) {
+                // TODO build the right select statement
+                String sql = "SELECT * FROM ProductGateway "
+                           + "Where id = ?";
+                PreparedStatement select = conn.prepareStatement(sql);
+                select.setLong(1, id);
+
+                // TODO fill all of the instance variables from that select statement
+                ResultSet set = select.executeQuery();
+                select.close();
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public static <T> T findAndBuild(long id, Function<ProductGateway, T> domainBuilder) {
         ProductGateway gateway = new ProductGateway(id);
 
         // TODO call the domainBuilder to get the object and return it
-        return null;
+        return domainBuilder.apply(gateway);
     }
 
     private Set<AudioCodec> getSupportedCodecsSet(int mask) {
@@ -161,7 +194,7 @@ public class ProductGateway {
         return codecs;
     }
 
-    public int calculateBitmask(Set<AudioCodec> codecs) {
+    private int calculateBitmask(Set<AudioCodec> codecs) {
         int bitmask = 0;
         for (AudioCodec codec : codecs) {
             // ordinal takes the specific placement of codec in the enum
