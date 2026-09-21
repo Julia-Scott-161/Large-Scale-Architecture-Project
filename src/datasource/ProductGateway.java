@@ -168,6 +168,10 @@ public class ProductGateway {
                 // TODO fill all of the instance variables from that select statement
                 select.execute();
                 select.close();
+                /*
+                if rs.hasNext
+                getDataOutOfResultSet.set
+                 */
             }
         }
         catch (SQLException e) {

@@ -2,6 +2,8 @@ package datasource;
 
 import domain.*;
 import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -81,6 +83,18 @@ public class ProductGatewayTests {
         assertEquals(expectedSet, actualSet);
     }
     */
+    @BeforeAll
+    public static void setUpDB() {
+        //create DB conn
+    }
+
+    //(gateway.getId(), AudioTrack::Builder)
+    //assertFalse
+
+    @AfterAll
+    public static void tearDownDB() {
+        //conn.rollback();
+    }
 
     @Test
     public void getGeneratedID() {
