@@ -36,6 +36,7 @@ public class ProductGateway {
     static void createTable() throws DatabaseException {
 
         String sql = "CREATE TABLE IF NOT EXISTS ProductGateway (" + " id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + " type TEXT,"
                 + " sku TEXT," + " name TEXT," + " basePrice DOUBLE,"
                 + " size INTEGER," + " hasLyrics BOOLEAN,"
                 + " codecs INTEGER" + ");";
@@ -50,17 +51,18 @@ public class ProductGateway {
     }
 
     private void insertNewRow() throws DatabaseException {
-        String sql = "INSERT INTO ProductGateway (sku, name, basePrice, size, hasLyrics, codecs) " +
-                "VALUES (?, ?, ?, ?, ?, ?);";
+        String sql = "INSERT INTO ProductGateway (type, sku, name, basePrice, size, hasLyrics, codecs) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?);";
 
         Connection conn = getConnection();
         try (PreparedStatement insert = conn.prepareStatement(sql)) {
-            insert.setString(1, sku);
-            insert.setString(2, name);
-            insert.setDouble(3, basePrice);
-            insert.setLong(4, size);
-            insert.setBoolean(5, hasLyrics);
-            insert.setInt(6, calculateBitmask(codecs));
+            insert.setString(1, String.valueOf(type));
+            insert.setString(2, sku);
+            insert.setString(3, name);
+            insert.setDouble(4, basePrice);
+            insert.setLong(5, size);
+            insert.setBoolean(6, hasLyrics);
+            insert.setInt(7, calculateBitmask(codecs));
 
             int affectedRows = insert.executeUpdate();
             if (affectedRows > 0) {
@@ -144,6 +146,7 @@ public class ProductGateway {
         insertNewRow();
     }
 
+    //TODO - now you have to store the many-to-many relationship
     public void insertSupportedServices(Connection connection) throws SQLException {
         //Separate Table necessary for many-to-many relationship
         String supportedServiceSql = "INSERT INTO SupportedServices (ElectronicsID, VideoStreamingID) VALUES (?, ?)";
@@ -174,7 +177,6 @@ public class ProductGateway {
         catch (SQLException e) {
             throw new DatabaseException(e.getMessage());
         }
-        this.type = ProductType.AudioTrack;
     }
 
     public static <T> T findAndBuild(long id, Function<ProductGateway, T> domainBuilder) throws DatabaseException {
@@ -195,6 +197,7 @@ public class ProductGateway {
 
     private void getDataOutOfResultSet(ResultSet rs) throws SQLException {
         this.id = rs.getLong("id");
+        this.type = ProductType.valueOf(rs.getString("type"));
         this.sku = rs.getString("sku");
         this.name = rs.getString("name");
         this.basePrice = rs.getDouble("basePrice");

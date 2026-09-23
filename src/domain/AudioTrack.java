@@ -40,7 +40,6 @@ public class AudioTrack extends DigitalMedia {
         ProductGateway gateway = new ProductGateway(ProductType.AudioTrack, sku, name, basePrice.dollars(),
                 size, hasLyrics, codecs, null);
         assignId(gateway.getId());
-        //TODO get the rest of our instance variables out of the gateway
         getDataOutOfGateway(gateway);
     }
 
@@ -69,13 +68,10 @@ public class AudioTrack extends DigitalMedia {
      * Look at how ProductGateway uses it: it only ever knows a generic T - not any specific type.
      */
     public static AudioTrack builder(ProductGateway gateway) throws DatasourceTypeMismatch{
-        // TODO make sure that the gateway you are given represents an audio track.  If not, throw the exception
         if (gateway.getType() != ProductType.AudioTrack) {
             throw new DatasourceTypeMismatch();
         }
-//        Cost price = new Cost(gateway.getBasePrice());
         AudioTrack audioTrack = new AudioTrack();
-        //TODO - fill in everything from the gateway
         audioTrack.getDataOutOfGateway(gateway);
         return audioTrack;
     }
