@@ -33,6 +33,7 @@ public class ProductGateway {
         return null;
     }
 
+    //right click, "change signature" it'll refactor and change everything
     static void createTable() throws DatabaseException {
 
         String sql = "CREATE TABLE IF NOT EXISTS ProductGateway (" + " id INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -133,6 +134,14 @@ public class ProductGateway {
      * @param codecs
      * @param supportedStreamingServices
      */
+    //hasSubtitles
+    //supportedCodecs
+    //width
+    //height
+    //depth
+    //size
+    //voltage
+
     public ProductGateway(ProductType type, String sku, String name, double basePrice,
                           long size, boolean hasLyrics, Set<AudioCodec> codecs, ArrayList<VideoStreaming> supportedStreamingServices) throws DatabaseException {
         this.type = type;
