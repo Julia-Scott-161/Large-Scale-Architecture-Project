@@ -20,7 +20,7 @@ public class ProductGateway {
     private String name;
     private double basePrice;
     private long size;
-    private boolean hasLyrics;
+    private Boolean hasLyrics;
     private Set<AudioCodec> codecs;
     private boolean hasSubtitles;
     private int videoResolution;
@@ -141,7 +141,6 @@ public class ProductGateway {
         this.hasLyrics = hasLyrics;
         this.codecs = codecs;
         this.supportedStreamingServices = supportedStreamingServices;
-
         insertNewRow();
     }
 
@@ -175,6 +174,7 @@ public class ProductGateway {
         catch (SQLException e) {
             throw new DatabaseException(e.getMessage());
         }
+        this.type = ProductType.AudioTrack;
     }
 
     public static <T> T findAndBuild(long id, Function<ProductGateway, T> domainBuilder) throws DatabaseException {
