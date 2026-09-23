@@ -5,7 +5,8 @@ import org.junit.Test;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Set;
 import static org.junit.Assert.*;
@@ -23,8 +24,19 @@ public class ProductGatewayTests {
     boolean hasLyrics = false;
     Set<AudioCodec> codecs;
     ArrayList<VideoStreaming> supportedStreamingServices = new ArrayList<>();
+    private static final Connection conn;
 
-
+    static
+    {
+        try
+        {
+            conn = DatabaseRegistry.getConnection();
+            assert !conn.isClosed();
+        } catch (SQLException e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
 
     /// The following tests were done to check calculateBitmask() and getSupportedCodecSet(int mask)'s
     /// functionality, by temporarily switching the functions to public. After the tests passed, the
@@ -84,20 +96,17 @@ public class ProductGatewayTests {
     }
     */
     @BeforeAll
-    public static void setUpDB() {
-        //create DB conn
+    public static void setUpDB() throws DatabaseException{
+        ProductGateway.createTable();
     }
 
-    //(gateway.getId(), AudioTrack::Builder)
-    //assertFalse
-
     @AfterAll
-    public static void tearDownDB() {
-        //conn.rollback();
+    public static void rollback() throws SQLException {
+        conn.rollback();
     }
 
     @Test
-    public void getGeneratedID() {
+    public void getGeneratedID() throws DatabaseException {
         //declare mock gateway instance
         codecs = Set.of(AudioCodec.WAV);
         ProductGateway gateway1 = new ProductGateway(type, sku, name, basePrice, size, hasLyrics, codecs, supportedStreamingServices);
@@ -110,7 +119,7 @@ public class ProductGatewayTests {
     }
 
     @Test
-    public void WrongTypeThrowException() {
+    public void WrongTypeThrowException() throws DatabaseException {
             long testId = 1;
             ProductGateway resultThrowsException = ProductGateway.findAndBuild(testId,
                     productGateway -> {return productGateway;});
@@ -118,7 +127,7 @@ public class ProductGatewayTests {
     }
 
     @Test
-    public void DomainBuilderTest() {
+    public void DomainBuilderTest() throws DatabaseException {
         long testID = 9;
 
         //basic test
@@ -141,7 +150,7 @@ public class ProductGatewayTests {
     }
 
     @Test
-    public void getInstanceVariablesFromSelect() {
+    public void getInstanceVariablesFromSelect() throws DatabaseException {
         long testID = 1;
         //TODO - getSku()
         String resultWithSku = ProductGateway.findAndBuild(testID, productGateway -> {
@@ -182,8 +191,21 @@ public class ProductGatewayTests {
     }
 
     @Test
+    public void canInsertAndRetrieveAudioTrackTest() throws DatabaseException {
+        ProductGateway gateway = new ProductGateway(ProductType.AudioTrack, sku, "Test Track", basePrice, 0, hasLyrics, Set.of(AudioCodec.MP3), null);
+
+        //Retrieve and make sure all the stuff that's supposed to be there (dramatic pause) is there
+        AudioTrack track = gateway.findAndBuild(gateway.getId(), AudioTrack::builder);
+        assertEquals(sku, track.getSku());
+        assertEquals("Test Track", track.getName());
+        assertEquals(basePrice, track.getBasePrice());
+        assertFalse(track.hasLyrics());
+        assertEquals(AudioCodec.MP3, track.getCodec());
+    }
+
+   /* @Test
     public void SupportedServicesTest(){
         //TODO test to ensure streaming supported services are properly stored
-    }
+    }*/
 }
 

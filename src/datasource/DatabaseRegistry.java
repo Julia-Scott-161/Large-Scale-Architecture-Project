@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 class DatabaseRegistry
 {
-    public static final String DB_URL = "jdbc:sqlite:products.sqlite";
+    public static final String DB_URL = "jdbc:sqlite:ProductGateway.sqlite";
     private static Connection connection;
 
     static Connection getConnection() throws SQLException

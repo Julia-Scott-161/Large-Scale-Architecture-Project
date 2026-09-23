@@ -63,6 +63,13 @@ public abstract class Product {
         return domainCatalog;
     }
 
+    protected void getDataOutOfGateway(ProductGateway gateway) {
+        this.id = gateway.getId();
+        this.sku = gateway.getSku();
+        this.name = gateway.getName();
+        this.basePrice = new Cost(gateway.getBasePrice());
+    }
+
     public void setName(String name) {
         this.name = name;
     }
