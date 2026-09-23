@@ -139,6 +139,20 @@ public class ProductGatewayTests {
         assertEquals(AudioCodec.MP3, track.getCodec());
     }
 
+    @Test
+    public void canInsertAndRetrieveVideoStreamingTest() throws DatabaseException {
+        //TODO: add hasSubtitles - use isHasSubtitles in ProductGateway
+        //TODO: add "getSupportedCodecs"
+        ProductGateway gateway = new ProductGateway(ProductType.VideoStreaming, sku, "Test Track", basePrice, 0, null, Set.of(AudioCodec.MP3), null);
+
+        VideoStreaming video = ProductGateway.findAndBuild(gateway.getId(), VideoStreaming::builder);
+        assertEquals(sku, video.getSku());
+        assertEquals("Test Track", video.getName());
+        assertEquals(basePrice, video.getBasePrice().dollars(),0.01);
+        assertTrue(video.getSubtitles());
+        assertEquals(AudioCodec.MP3, video.getSupportedCodecs());
+    }
+
    /* @Test
     public void SupportedServicesTest(){
         //TODO test to ensure streaming supported services are properly stored
