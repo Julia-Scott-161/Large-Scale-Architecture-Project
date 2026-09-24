@@ -117,8 +117,7 @@ public class ProductGatewayTests {
     @Test
     public void WrongTypeThrowException() throws DatabaseException {
         ProductGateway gateway = new ProductGateway(ProductType.VideoStreaming, sku, "Test Track", basePrice, 0, hasLyrics, Set.of(AudioCodec.MP3), null);
-        AudioTrack resultThrowsException = ProductGateway.findAndBuild(gateway.getId(), AudioTrack::builder);
-            //TODO: create assert statement
+            assertThrows(DatasourceTypeMismatch.class, () -> AudioTrack.builder(gateway));
     }
 
     @Test
