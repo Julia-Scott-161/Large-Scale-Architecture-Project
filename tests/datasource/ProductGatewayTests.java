@@ -75,7 +75,6 @@ public class ProductGatewayTests {
 //        assertEquals(8, actualBitmask);
 //    }
 
-/*
     @Test
     public void getSupportedCodecsTest() {
         codecs = Set.of();
