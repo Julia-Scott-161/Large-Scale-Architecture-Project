@@ -37,7 +37,8 @@ public abstract class Product {
 
     // This is a map of builders that will let us create domain objects
     private static final Map<ProductType, Function<ProductGateway, ? extends Product>> BUILDERS = Map.of(
-            ProductType.AudioTrack, AudioTrack::builder
+            ProductType.AudioTrack, AudioTrack::builder,
+            ProductType.VideoStreaming, VideoStreaming::builder
             // TODO: append others here as they are built
     );
 
@@ -61,6 +62,13 @@ public abstract class Product {
         }
 
         return domainCatalog;
+    }
+
+    protected void getDataOutOfGateway(ProductGateway gateway) {
+        this.id = gateway.getId();
+        this.sku = gateway.getSku();
+        this.name = gateway.getName();
+        this.basePrice = new Cost(gateway.getBasePrice());
     }
 
     public void setName(String name) {
