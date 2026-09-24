@@ -34,6 +34,7 @@ public class ProductGateway {
     //apparel
     private int ApparelSize;
     //electronics
+    private int Voltage;
 
     private ArrayList<VideoStreaming> supportedStreamingServices;
 
