@@ -75,22 +75,22 @@ public class ProductGatewayTests {
 //        assertEquals(8, actualBitmask);
 //    }
 
-    @Test
-    public void getSupportedCodecsTest() {
-        codecs = Set.of();
-        ProductGateway gateway = new ProductGateway(type, sku, name, basePrice, size, hasLyrics, codecs, supportedStreamingServices);
-        //Mask 0 = Empty Set
-        assertTrue(gateway.getSupportedCodecsSet(0).isEmpty());
-        //Mask 3 = MP3 + AAC
-        Set<AudioCodec> expectedSet = Set.of(AudioCodec.MP3, AudioCodec.AAC);
-        Set<AudioCodec> actualSet = gateway.getSupportedCodecsSet(3);
-        assertEquals(expectedSet, actualSet);
-        //Mask 15 = MP3 + AAC + FLAV + WAV
-        expectedSet = Set.of(AudioCodec.MP3, AudioCodec.AAC, AudioCodec.FLAC, AudioCodec.WAV);
-        actualSet = gateway.getSupportedCodecsSet(15);
-        assertEquals(expectedSet, actualSet);
-    }
-    */
+//    @Test
+//    public void getSupportedCodecsTest() throws DatabaseException {
+//        codecs = Set.of();
+//        ProductGateway gateway = new ProductGateway(type, sku, name, basePrice, size, hasLyrics, codecs, supportedStreamingServices);
+//        //Mask 0 = Empty Set
+//        assertTrue(gateway.getSupportedCodecsSet(0).isEmpty());
+//        //Mask 3 = MP3 + AAC
+//        Set<AudioCodec> expectedSet = Set.of(AudioCodec.MP3, AudioCodec.AAC);
+//        Set<AudioCodec> actualSet = gateway.getSupportedCodecsSet(3);
+//        assertEquals(expectedSet, actualSet);
+//        //Mask 15 = MP3 + AAC + FLAV + WAV
+//        expectedSet = Set.of(AudioCodec.MP3, AudioCodec.AAC, AudioCodec.FLAC, AudioCodec.WAV);
+//        actualSet = gateway.getSupportedCodecsSet(15);
+//        assertEquals(expectedSet, actualSet);
+//    }
+
     @BeforeAll
     public static void setUpDB() throws DatabaseException{
         ProductGateway.createTable();

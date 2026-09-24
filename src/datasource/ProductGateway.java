@@ -19,11 +19,22 @@ public class ProductGateway {
     private String sku;
     private String name;
     private double basePrice;
+    //digital media
     private long size;
     private Boolean hasLyrics;
     private Set<AudioCodec> codecs;
+    //TODO: Add To Table
+    //VideoStreaming
     private boolean hasSubtitles;
-    private int videoResolution;
+    //TODO - how to store supported services? Was in table as multiple booleans. get supported codecs?
+    //physical media
+    private double width;
+    private double height;
+    private double depth;
+    //apparel
+    private int ApparelSize;
+    //electronics
+
     private ArrayList<VideoStreaming> supportedStreamingServices;
 
     //========================================================================================================
@@ -113,10 +124,6 @@ public class ProductGateway {
 
     public boolean isHasSubtitles() {
         return hasSubtitles;
-    }
-
-    public int getVideoResolution() {
-        return videoResolution;
     }
 
     public ArrayList<VideoStreaming> getSupportedStreamingServices() {
