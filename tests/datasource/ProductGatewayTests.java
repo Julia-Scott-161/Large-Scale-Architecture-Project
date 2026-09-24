@@ -148,10 +148,5 @@ public class ProductGatewayTests {
 //        assertTrue(video.getSubtitles());
 //        assertEquals(AudioCodec.MP3, video.getSupportedCodecs());
 //    }
-
-   /* @Test
-    public void SupportedServicesTest(){
-        //TODO test to ensure streaming supported services are properly stored
-    }*/
 }
 

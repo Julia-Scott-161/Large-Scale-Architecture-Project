@@ -40,7 +40,7 @@ public class ProductGateway {
                 + " type TEXT,"
                 + " sku TEXT," + " name TEXT," + " basePrice DOUBLE,"
                 + " size INTEGER," + " hasLyrics BOOLEAN,"
-                + " codecs INTEGER" + ");";
+                + " codecs INTEGER" + " hasSubtitles BOOLEAN," + ");";
 
         // Establish connection and execute statement
         Connection conn = getConnection();
