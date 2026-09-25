@@ -11,7 +11,7 @@ public class VideoStreaming extends DigitalMedia { // Or a component/subclass
 
 
     /**
-     * This is the function injected into the datasource layr that allows it to build a VideoStreaming service
+     * This is the function injected into the datasource layer that allows it to build a VideoStreaming service
      * @param productGateway
      * @return
      */
