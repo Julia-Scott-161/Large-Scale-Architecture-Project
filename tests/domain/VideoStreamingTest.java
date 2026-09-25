@@ -12,12 +12,18 @@ public class VideoStreamingTest {
     String sku = "300000000003";
     String name = "Test Video";
     double basePrice = 15.99;
+    Cost cost = new Cost (basePrice);
     long size = 50;
 
     ///starts with an VideoStreaming and lets it build the gateway
     @Test
     public void CreateVideoStreamingTest() throws DatabaseException {
-        Cost cost = new Cost(basePrice);
+        VideoStreaming videoStreaming = new VideoStreaming(sku, name, cost, size, true);
+        assertEquals(sku, videoStreaming.getSku());
+        assertEquals(name, videoStreaming.getName());
+        assertEquals(basePrice, videoStreaming.getBasePrice().dollars(), 0.01);
+        assertEquals(size, videoStreaming.getSize());
+        assert(videoStreaming.isHasSubtitles());
     }
 
     /// starts with a gateway and calls VideoStreaming.builder() on that gateway
@@ -35,7 +41,7 @@ public class VideoStreamingTest {
         assertEquals(name, videoStreaming.getName());
         assertEquals(basePrice, videoStreaming.getBasePrice().dollars(), 0.01);
         assertEquals(size, videoStreaming.getSize());
-        //TODO- add isHasSubTitles
+        //assert(videoStreaming.isHasSubtitles());
     }
 
     /// Starts with a gateway and calls findAndBuild on it's id

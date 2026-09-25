@@ -28,16 +28,23 @@ public class VideoStreaming extends DigitalMedia { // Or a component/subclass
     protected void getDataOutOfGateway(ProductGateway gateway)
     {
         super.getDataOutOfGateway(gateway);
-        this.label = gateway.getApparelSize();
+        this.hasSubtitles = gateway.isHasSubtitles();
+    }
+
+    private VideoStreaming() {
     }
     /**
      * This is the function injected into the datasource layer that allows it to build a VideoStreaming service
-     * @param productGateway
+     * @param gateway
      * @return
      */
-    public static VideoStreaming builder(ProductGateway productGateway) {
-        //TODO fill this in
-        return null;
+    public static VideoStreaming builder(ProductGateway gateway) throws DatasourceTypeMismatch {
+        if (gateway.getType() != ProductType.VideoStreaming) {
+            throw new DatasourceTypeMismatch();
+        }
+        VideoStreaming videoStreaming = new VideoStreaming();
+        videoStreaming.getDataOutOfGateway(gateway);
+        return videoStreaming;
     }
 
 

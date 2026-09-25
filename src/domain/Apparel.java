@@ -11,7 +11,7 @@ public class Apparel extends PhysicalProduct {
         return ProductGateway.findAndBuild(id, Apparel::builder);
     }
 
-    public String getApparelSize(){
+    public String getApparelSize() {
         return label;
     }
 
