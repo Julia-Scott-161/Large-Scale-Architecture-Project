@@ -8,8 +8,6 @@ import java.util.Set;
 public class VideoStreaming extends DigitalMedia { // Or a component/subclass
     private Set<AudioCodec> supportedCodecs;
 
-
-
     /**
      * This is the function injected into the datasource layer that allows it to build a VideoStreaming service
      * @param productGateway
