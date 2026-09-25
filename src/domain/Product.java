@@ -39,8 +39,9 @@ public abstract class Product {
     private static final Map<ProductType, Function<ProductGateway, ? extends Product>> BUILDERS = Map.of(
             ProductType.AudioTrack, AudioTrack::builder,
             ProductType.VideoStreaming, VideoStreaming::builder,
-            ProductType.DigitalMedia, DigitalMedia::builder
-            // TODO: append others here as they are built
+            ProductType.DigitalMedia, DigitalMedia::builder,
+            ProductType.Apparel, Apparel::builder,
+            ProductType.Electronics, Electronics::builder
     );
 
     /**

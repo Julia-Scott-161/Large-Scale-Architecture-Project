@@ -112,6 +112,31 @@ public class ProductGatewayTests {
     }
 
     @Test
+    @Disabled("Fix and run this only when you change the structure of the table")
+    public void canCreateTable() throws DatabaseException {
+        ProductGateway.createTable();
+        try(Statement stmt = conn.createStatement())
+        {
+            // Create the table
+            ResultSet tables = stmt.executeQuery("SELECT name FROM sqlite_master " + "WHERE " + "type='table' AND name NOT LIKE 'sqlite_%'");
+
+            boolean tableExists = false;
+            while (tables.next() && !tableExists)
+            {
+                String tableName = tables.getString("name");
+                if (tableName.equals("ProductGateway"))
+                {
+                    tableExists = true;
+                }
+            }
+            assert (tableExists);
+            stmt.execute("COMMIT;");
+        } catch(SQLException e){
+            fail("SQL Exception" + e.getMessage());
+        }
+    }
+
+    @Test
     public void getGeneratedID() throws DatabaseException {
         //declare mock gateway instance
         codecs = Set.of(AudioCodec.WAV);

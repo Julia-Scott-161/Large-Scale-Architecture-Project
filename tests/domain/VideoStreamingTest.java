@@ -18,15 +18,6 @@ public class VideoStreamingTest {
     @Test
     public void CreateVideoStreamingTest() throws DatabaseException {
         Cost cost = new Cost(basePrice);
-        //creates a VideoStreaming, VideoStreaming creates the gateway
-        //TODO - add other variables
-//        VideoStreaming videoStreaming = new VideoStreaming(sku, name, cost, size);
-//        //makes sure other variables are set and retrieved correctly
-//        assertEquals(sku, videoStreaming.getSku());
-//        assertEquals(name, videoStreaming.getName());
-//        assertEquals(cost, videoStreaming.getBasePrice());
-//        assertEquals(size, videoStreaming.getSize());
-        //TODO - add isHasSubtitles
     }
 
     /// starts with a gateway and calls VideoStreaming.builder() on that gateway
@@ -61,7 +52,7 @@ public class VideoStreamingTest {
         assertEquals(name, videoStreaming.getName());
         assertEquals(basePrice, videoStreaming.getBasePrice().dollars(), 0.01);
         assertEquals(size, videoStreaming.getSize());
-        //TODO - isHasSubtitles assert
+        assert(videoStreaming.isHasSubtitles());
     }
 
     @Test
