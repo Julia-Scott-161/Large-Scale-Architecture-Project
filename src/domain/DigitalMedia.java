@@ -2,7 +2,7 @@ package domain;
 import datasource.ProductGateway;
 
 public class DigitalMedia extends Product{
-    long size;
+    private long size;
 
     protected void getDataOutOfGateway(ProductGateway gateway) {
         super.getDataOutOfGateway(gateway);

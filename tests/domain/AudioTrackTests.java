@@ -10,8 +10,8 @@ import java.util.Set;
 import static org.junit.Assert.*;
 
 public class AudioTrackTests {
-    String sku = "000000000001";
-    String name = "Test Product";
+    String sku = "100000000001";
+    String name = "Test Track";
     double basePrice = 15.99;
     long size = 50;
     boolean hasLyrics = false;
