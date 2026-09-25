@@ -5,7 +5,6 @@ import datasource.ProductGateway;
 import datasource.ProductType;
 
 import org.junit.Test;
-import java.util.ArrayList;
 import java.util.Set;
 import static org.junit.Assert.*;
 
@@ -31,7 +30,7 @@ public class DigitalMediaTests {
     /// starts with a gateway and calls AudioTrack.builder() on that gateway
     @Test
     public void CreateDigitalMediaFromGatewayTest() throws DatabaseException {
-        ProductGateway gateway = new ProductGateway(ProductType.DigitalMedia, sku, name, basePrice, size, false, Set.of(), null);
+        ProductGateway gateway = new ProductGateway(ProductType.DigitalMedia, sku, name, basePrice, size, false, null, null);
         //starts with a gateway, calls .builder() directly
         DigitalMedia media = DigitalMedia.builder(gateway);
 
@@ -47,23 +46,23 @@ public class DigitalMediaTests {
     /// Starts with a gateway and calls findAndBuild on it's id
     @Test
     public void FindAndBuildDigitalMediaTest() throws DatabaseException {
-        ProductGateway gateway = new ProductGateway(ProductType.DigitalMedia, sku, name, basePrice, size, false, Set.of(), null);
+        ProductGateway gateway = new ProductGateway(ProductType.DigitalMedia, sku, name, basePrice, size, false, null, null);
         //starts with a gateway, calls find and build
-        AudioTrack track = ProductGateway.findAndBuild(gateway.getId(), DigitalMedia::builder);
+        DigitalMedia media = ProductGateway.findAndBuild(gateway.getId(), DigitalMedia::builder);
 
-        //make sure gateway and audiotrack's IDs match
-        assertEquals(gateway.getId(), track.getId());
+        //make sure gateway and DigitalMedia's IDs match
+        assertEquals(gateway.getId(), media.getId());
 
         //make sure other variables are set and retrieved correctly
-        assertEquals(sku, track.getSku());
-        assertEquals(name, track.getName());
-        assertEquals(basePrice, track.getBasePrice().dollars(), 0.01);
-        assertEquals(size, track.getSize());
+        assertEquals(sku, media.getSku());
+        assertEquals(name, media.getName());
+        assertEquals(basePrice, media.getBasePrice().dollars(), 0.01);
+        assertEquals(size, media.getSize());
     }
 
     @Test
     public void WrongTypeThrowException() throws DatabaseException {
-        ProductGateway gateway = new ProductGateway(ProductType.VideoStreaming, sku, name, basePrice, size, false, Set.of(), null);
+        ProductGateway gateway = new ProductGateway(ProductType.VideoStreaming, sku, name, basePrice, size, false, null, null);
         assertThrows(DatasourceTypeMismatch.class, () -> DigitalMedia.builder(gateway));
     }
 }

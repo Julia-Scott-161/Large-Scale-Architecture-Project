@@ -1,12 +1,13 @@
 package domain;
 
+import datasource.DatabaseException;
 import datasource.ProductGateway;
 
 import java.util.Set;
 
 public class VideoStreaming extends DigitalMedia { // Or a component/subclass
     private Set<AudioCodec> supportedCodecs;
-    // Put the enum field right here!
+
 
 
     /**

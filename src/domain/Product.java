@@ -38,7 +38,8 @@ public abstract class Product {
     // This is a map of builders that will let us create domain objects
     private static final Map<ProductType, Function<ProductGateway, ? extends Product>> BUILDERS = Map.of(
             ProductType.AudioTrack, AudioTrack::builder,
-            ProductType.VideoStreaming, VideoStreaming::builder
+            ProductType.VideoStreaming, VideoStreaming::builder,
+            ProductType.DigitalMedia, DigitalMedia::builder
             // TODO: append others here as they are built
     );
 
