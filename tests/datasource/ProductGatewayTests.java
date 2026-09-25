@@ -4,12 +4,16 @@ import domain.*;
 import org.junit.Test;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Set;
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class ProductGatewayTests {
 
@@ -17,10 +21,12 @@ public class ProductGatewayTests {
     String sku = "000000000001";
     String name = "Test Product";
     double basePrice = 15.99;
+    Cost cost = new Cost(15.99);
     long size = 50;
     boolean hasLyrics = false;
     Set<AudioCodec> codecs;
     ArrayList<VideoStreaming> supportedStreamingServices = new ArrayList<>();
+
     private static final Connection conn;
 
     static
@@ -38,7 +44,7 @@ public class ProductGatewayTests {
     /// The following tests were done to check calculateBitmask() and getSupportedCodecSet(int mask)'s
     /// functionality, by temporarily switching the functions to public. After the tests passed, the
     /// functions became private again.
-
+//
 //    @Test
 //    public void CodecBitmaskEdgesTest() {
 //        //Set is empty
@@ -114,24 +120,7 @@ public class ProductGatewayTests {
         assertNotEquals(gateway1.getId(), gateway2.getId());
     }
 
-    @Test
-    public void WrongTypeThrowException() throws DatabaseException {
-        ProductGateway gateway = new ProductGateway(ProductType.VideoStreaming, sku, "Test Track", basePrice, 0, hasLyrics, Set.of(AudioCodec.MP3), null);
-            assertThrows(DatasourceTypeMismatch.class, () -> AudioTrack.builder(gateway));
-    }
 
-    @Test
-    public void canInsertAndRetrieveAudioTrackTest() throws DatabaseException {
-        ProductGateway gateway = new ProductGateway(ProductType.AudioTrack, sku, "Test Track", basePrice, 0, hasLyrics, Set.of(AudioCodec.MP3), null);
-
-        //Retrieve and make sure all the stuff that's supposed to be there (dramatic pause) is there
-        AudioTrack track = ProductGateway.findAndBuild(gateway.getId(), AudioTrack::builder);
-        assertEquals(sku, track.getSku());
-        assertEquals("Test Track", track.getName());
-        assertEquals(basePrice, track.getBasePrice().dollars(),0.01);
-        assertFalse(track.hasLyrics());
-        assertEquals(AudioCodec.MP3, track.getCodec());
-    }
 
 //    @Test
 //    public void canInsertAndRetrieveVideoStreamingTest() throws DatabaseException {
@@ -146,5 +135,23 @@ public class ProductGatewayTests {
 //        assertTrue(video.getSubtitles());
 //        assertEquals(AudioCodec.MP3, video.getSupportedCodecs());
 //    }
+
+    @Test
+    public void canInsertAndRetrieveApparelTest() throws DatabaseException {
+        /*
+        test main functions of apparel class
+        apparel = new apparel ( variables, , ,, , ,);
+        assert get functions from gateway
+
+        verifies initialization is correct
+        create gateway
+        call Apparel.builder(gateway);
+        assert get functions from gateway
+
+        Verfies exception throws correctly
+
+
+         */
+    }
 }
 

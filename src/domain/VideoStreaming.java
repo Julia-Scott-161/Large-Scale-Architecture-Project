@@ -6,7 +6,7 @@ import java.util.Set;
 
 public class VideoStreaming extends DigitalMedia { // Or a component/subclass
     private Set<AudioCodec> supportedCodecs;
-    private ApparelSize maxResolution; // Put the enum field right here!
+    // Put the enum field right here!
 
 
     /**

@@ -52,7 +52,7 @@ public class ProductGateway {
                 + " type TEXT,"
                 + " sku TEXT," + " name TEXT," + " basePrice DOUBLE,"
                 + " size INTEGER," + " hasLyrics BOOLEAN,"
-                + " codecs INTEGER" + " hasSubtitles BOOLEAN," + ");";
+                + " codecs INTEGER," + " hasSubtitles BOOLEAN" + ");";
 
         // Establish connection and execute statement
         Connection conn = getConnection();
@@ -150,7 +150,7 @@ public class ProductGateway {
     //size
     //voltage
 
-    public ProductGateway(ProductType type, String sku, String name, double basePrice,
+    public ProductGateway(ProductType type, String sku, String name, Double basePrice,
                           long size, boolean hasLyrics, Set<AudioCodec> codecs, ArrayList<VideoStreaming> supportedStreamingServices) throws DatabaseException {
         this.type = type;
         this.sku = sku;
