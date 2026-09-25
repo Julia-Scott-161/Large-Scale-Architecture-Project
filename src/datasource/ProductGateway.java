@@ -32,9 +32,9 @@ public class ProductGateway {
     private double height;
     private double depth;
     //apparel
-    private int apparelSize;
+    private String apparelSize;
     //electronics
-    private int voltage;
+    private String voltage;
 
     private ArrayList<VideoStreaming> supportedStreamingServices;
 
@@ -54,7 +54,7 @@ public class ProductGateway {
                 + " size INTEGER," + " hasLyrics BOOLEAN,"
                 + " codecs INTEGER," + " hasSubtitles BOOLEAN,"
                 + " width DOUBLE," + " height DOUBLE," + " depth DOUBLE,"
-                + " apparelSize INTEGER," + " voltage INTEGER" + ");";
+                + " apparelSize TEXT," + " voltage TEXT" + ");";
 
         // Establish connection and execute statement
         Connection conn = getConnection();
@@ -83,8 +83,8 @@ public class ProductGateway {
             insert.setDouble(9, width);
             insert.setDouble(10, height);
             insert.setDouble(11, depth);
-            insert.setInt(12, apparelSize);
-            insert.setInt(13, voltage);
+            insert.setString(12, apparelSize);
+            insert.setString(13, voltage);
 
             int affectedRows = insert.executeUpdate();
             if (affectedRows > 0) {
@@ -152,11 +152,11 @@ public class ProductGateway {
         return depth;
     }
 
-    public int getApparelSize() {
+    public String getApparelSize() {
         return apparelSize;
     }
 
-    public int getVoltage() {
+    public String getVoltage() {
         return voltage;
     }
 
@@ -181,8 +181,8 @@ public class ProductGateway {
 
     public ProductGateway(ProductType type, String sku, String name, Double basePrice,
                           long size, boolean hasLyrics, Set<AudioCodec> codecs, boolean hasSubtitles,
-                          double width, double height, double depth, int apparelSize,
-                          int voltage, ArrayList<VideoStreaming> supportedStreamingServices) throws DatabaseException {
+                          double width, double height, double depth, String apparelSize,
+                          String voltage, ArrayList<VideoStreaming> supportedStreamingServices) throws DatabaseException {
         this.type = type;
         this.sku = sku;
         this.name = name;
@@ -262,8 +262,9 @@ public class ProductGateway {
         this.width = rs.getDouble("width");
         this.height = rs.getDouble("height");
         this.depth = rs.getDouble("depth");
-        this.apparelSize = rs.getInt("apparelSize");
-        this.voltage = rs.getInt("voltage");
+        //TODO: add a check to see if string matches an actual option
+        this.apparelSize = rs.getString("apparelSize");
+        this.voltage = rs.getString("voltage");
     }
 
     private Set<AudioCodec> getSupportedCodecsSet(int mask) {

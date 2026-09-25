@@ -12,12 +12,13 @@ public class DigitalMediaTests {
     String sku = "200000000002";
     String name = "Test Media";
     double basePrice = 15.99;
+    Cost cost = new Cost(basePrice);
     long size = 50;
 
     ///starts with an audio track and lets it build the gateway
     @Test
     public void CreateDigitalMediaTest() throws DatabaseException {
-        Cost cost = new Cost(basePrice);
+
         //creates a digital media, DigitalMedia creates the gateway
         DigitalMedia media = new DigitalMedia(sku, name, cost, size);
         //makes sure other variables are set and retrieved correctly
@@ -30,7 +31,8 @@ public class DigitalMediaTests {
     /// starts with a gateway and calls AudioTrack.builder() on that gateway
     @Test
     public void CreateDigitalMediaFromGatewayTest() throws DatabaseException {
-        ProductGateway gateway = new ProductGateway(ProductType.DigitalMedia, sku, name, basePrice, size, false, null, null);
+        ProductGateway gateway = new ProductGateway(ProductType.DigitalMedia, sku, name, basePrice, size, false, null,
+                false,0.0, 0.0, 0.0, null, null, null);
         //starts with a gateway, calls .builder() directly
         DigitalMedia media = DigitalMedia.builder(gateway);
 
@@ -46,7 +48,8 @@ public class DigitalMediaTests {
     /// Starts with a gateway and calls findAndBuild on it's id
     @Test
     public void FindAndBuildDigitalMediaTest() throws DatabaseException {
-        ProductGateway gateway = new ProductGateway(ProductType.DigitalMedia, sku, name, basePrice, size, false, null, null);
+        ProductGateway gateway = new ProductGateway(ProductType.DigitalMedia, sku, name, basePrice, size, false, null,
+                false,0.0, 0.0, 0.0, null, null, null);
         //starts with a gateway, calls find and build
         DigitalMedia media = ProductGateway.findAndBuild(gateway.getId(), DigitalMedia::builder);
 
@@ -62,7 +65,8 @@ public class DigitalMediaTests {
 
     @Test
     public void WrongTypeThrowException() throws DatabaseException {
-        ProductGateway gateway = new ProductGateway(ProductType.VideoStreaming, sku, name, basePrice, size, false, null, null);
+        ProductGateway gateway = new ProductGateway(ProductType.VideoStreaming, sku, name, basePrice, size, false, null,
+                false,0.0, 0.0, 0.0, null, null, null);
         assertThrows(DatasourceTypeMismatch.class, () -> DigitalMedia.builder(gateway));
     }
 }

@@ -16,7 +16,8 @@ public class DigitalMedia extends Product{
     }
 
     public DigitalMedia(String sku, String name, Cost basePrice, long size) throws DatabaseException {
-        ProductGateway gateway = new ProductGateway(ProductType.DigitalMedia, sku, name, basePrice.dollars(), size, false, null, null);
+        ProductGateway gateway = new ProductGateway(ProductType.DigitalMedia, sku, name, basePrice.dollars(), size, false, null,
+                false, 0.0, 0.0, 0.0, null, null, null);
         assignId(gateway.getId());
         getDataOutOfGateway(gateway);
     }

@@ -38,8 +38,8 @@ public class AudioTrack extends DigitalMedia {
      */
     public AudioTrack(String sku, String name, Cost basePrice, long size, boolean hasLyrics, Set<AudioCodec> codecs) throws DatabaseException {
         super();
-        ProductGateway gateway = new ProductGateway(ProductType.AudioTrack, sku, name, basePrice.dollars(),
-                size, hasLyrics, codecs, null);
+        ProductGateway gateway = new ProductGateway(ProductType.AudioTrack, sku, name, basePrice.dollars(), size, hasLyrics, codecs,
+                false, 0.0, 0.0, 0.0, null, null, null);
         assignId(gateway.getId());
         getDataOutOfGateway(gateway);
     }

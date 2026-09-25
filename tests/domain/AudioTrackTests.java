@@ -34,7 +34,8 @@ public class AudioTrackTests {
     /// starts with a gateway and calls AudioTrack.builder() on that gateway
     @Test
     public void CreateAudioTrackFromGatewayTest() throws DatabaseException {
-        ProductGateway gateway = new ProductGateway(ProductType.AudioTrack, sku, name, basePrice, size, hasLyrics, Set.of(AudioCodec.MP3), null);
+        ProductGateway gateway = new ProductGateway(ProductType.AudioTrack, sku, name, basePrice, size, hasLyrics, Set.of(AudioCodec.MP3),
+                false,0.0, 0.0, 0.0, null, null, null);
         //starts with a gateway, calls .builder() directly
         AudioTrack track = AudioTrack.builder(gateway);
 
@@ -52,7 +53,8 @@ public class AudioTrackTests {
     /// Starts with a gateway and calls findAndBuild on it's id
     @Test
     public void FindAndBuildAudioTrackTest() throws DatabaseException {
-        ProductGateway gateway = new ProductGateway(ProductType.AudioTrack, sku, name, basePrice, size, hasLyrics, Set.of(AudioCodec.MP3), null);
+        ProductGateway gateway = new ProductGateway(ProductType.AudioTrack, sku, name, basePrice, size, hasLyrics, Set.of(AudioCodec.MP3),
+                false,0.0, 0.0, 0.0, null, null, null);
         //starts with a gateway, calls find and build
         AudioTrack track = ProductGateway.findAndBuild(gateway.getId(), AudioTrack::builder);
         //make sure gateway and audiotrack's IDs match
@@ -68,7 +70,8 @@ public class AudioTrackTests {
 
     @Test
     public void WrongTypeThrowException() throws DatabaseException {
-        ProductGateway gateway = new ProductGateway(ProductType.VideoStreaming, sku, name, basePrice, size, hasLyrics, Set.of(AudioCodec.MP3), null);
+        ProductGateway gateway = new ProductGateway(ProductType.VideoStreaming, sku, name, basePrice, size, hasLyrics, Set.of(AudioCodec.MP3),
+                false,0.0, 0.0, 0.0, null, null, null);
         assertThrows(DatasourceTypeMismatch.class, () -> AudioTrack.builder(gateway));
     }
 }

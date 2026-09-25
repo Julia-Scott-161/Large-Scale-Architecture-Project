@@ -32,7 +32,8 @@ public class VideoStreamingTest {
     /// starts with a gateway and calls VideoStreaming.builder() on that gateway
     @Test
     public void CreateVideoStreamingFromGatewayTest() throws DatabaseException {
-        ProductGateway gateway = new ProductGateway(ProductType.VideoStreaming, sku, name, basePrice, size, false, null, null);
+        ProductGateway gateway = new ProductGateway(ProductType.VideoStreaming, sku, name, basePrice, size, false, null,
+                true,0.0, 0.0, 0.0, null, null, null);
         //starts with a gateway, calls .builder() directly
         VideoStreaming videoStreaming = VideoStreaming.builder(gateway);
 
@@ -49,7 +50,8 @@ public class VideoStreamingTest {
     /// Starts with a gateway and calls findAndBuild on it's id
     @Test
     public void FindAndBuildVideoStreamingTest() throws DatabaseException {
-        ProductGateway gateway = new ProductGateway(ProductType.VideoStreaming, sku, name, basePrice, size, false, null, null);
+        ProductGateway gateway = new ProductGateway(ProductType.VideoStreaming, sku, name, basePrice, size, false, null,
+                true,0.0, 0.0, 0.0, null, null, null);
         //starts with a gateway, calls find and build
         VideoStreaming videoStreaming = ProductGateway.findAndBuild(gateway.getId(), VideoStreaming::builder);
         //make sure gateway and audiotrack's IDs match
@@ -64,7 +66,8 @@ public class VideoStreamingTest {
 
     @Test
     public void WrongTypeThrowException() throws DatabaseException {
-        ProductGateway gateway = new ProductGateway(ProductType.AudioTrack, sku, name, basePrice, size, false, null, null);
+        ProductGateway gateway = new ProductGateway(ProductType.AudioTrack, sku, name, basePrice, size, false, null,
+                true,0.0, 0.0, 0.0, null, null, null);
         assertThrows(DatasourceTypeMismatch.class, () -> VideoStreaming.builder(gateway));
     }
 }

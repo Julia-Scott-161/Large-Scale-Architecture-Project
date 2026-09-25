@@ -21,22 +21,26 @@ public class ProductGatewayTests {
     String sku = "000000000001";
     String name = "Test Product";
     double basePrice = 15.99;
-    Cost cost = new Cost(15.99);
-    long size = 50;
+    Cost cost = new Cost(basePrice);
+    //other values default to null, zero, or false
+    long size = 0;
     boolean hasLyrics = false;
-    Set<AudioCodec> codecs;
-    ArrayList<VideoStreaming> supportedStreamingServices = new ArrayList<>();
-
+    Set<AudioCodec> codecs = null;
+    boolean hasSubtitles = false;
+    double width = 0;
+    double height = 0;
+    double depth = 0;
+    String apparelSize = null;
+    String voltage = null;
+    //ArrayList<VideoStreaming> supportedStreamingServices = new ArrayList<>();
+    ArrayList<VideoStreaming> supportedStreamingServices = null;
     private static final Connection conn;
 
-    static
-    {
-        try
-        {
+    static {
+        try {
             conn = DatabaseRegistry.getConnection();
             assert !conn.isClosed();
-        } catch (SQLException e)
-        {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
@@ -98,7 +102,7 @@ public class ProductGatewayTests {
 //    }
 
     @BeforeAll
-    public static void setUpDB() throws DatabaseException{
+    public static void setUpDB() throws DatabaseException {
         ProductGateway.createTable();
     }
 
@@ -111,47 +115,15 @@ public class ProductGatewayTests {
     public void getGeneratedID() throws DatabaseException {
         //declare mock gateway instance
         codecs = Set.of(AudioCodec.WAV);
-        ProductGateway gateway1 = new ProductGateway(type, sku, name, basePrice, size, hasLyrics, codecs, supportedStreamingServices);
-        ProductGateway gateway2 = new ProductGateway(type, sku, name, basePrice, size, hasLyrics, codecs, supportedStreamingServices);
+        ProductGateway gateway1 = new ProductGateway(type, sku, name, basePrice, size, hasLyrics, codecs,
+                hasSubtitles, width, height, depth, apparelSize, voltage, supportedStreamingServices);
+        ProductGateway gateway2 = new ProductGateway(type, sku, name, basePrice, size, hasLyrics, codecs,
+                hasSubtitles, width, height, depth, apparelSize, voltage, supportedStreamingServices);
 
         //generated ID should be more than 0
-        assert(gateway1.getId() > 0);
+        assert (gateway1.getId() > 0);
         //generated ID should be unique
         assertNotEquals(gateway1.getId(), gateway2.getId());
-    }
-
-
-
-//    @Test
-//    public void canInsertAndRetrieveVideoStreamingTest() throws DatabaseException {
-//        //TODO: add hasSubtitles - use isHasSubtitles in ProductGateway
-//        //TODO: add "getSupportedCodecs"
-//        ProductGateway gateway = new ProductGateway(ProductType.VideoStreaming, sku, "Test Track", basePrice, 0, null, Set.of(AudioCodec.MP3), null);
-//
-//        VideoStreaming video = ProductGateway.findAndBuild(gateway.getId(), VideoStreaming::builder);
-//        assertEquals(sku, video.getSku());
-//        assertEquals("Test Track", video.getName());
-//        assertEquals(basePrice, video.getBasePrice().dollars(),0.01);
-//        assertTrue(video.getSubtitles());
-//        assertEquals(AudioCodec.MP3, video.getSupportedCodecs());
-//    }
-
-    @Test
-    public void canInsertAndRetrieveApparelTest() throws DatabaseException {
-        /*
-        test main functions of apparel class
-        apparel = new apparel ( variables, , ,, , ,);
-        assert get functions from gateway
-
-        verifies initialization is correct
-        create gateway
-        call Apparel.builder(gateway);
-        assert get functions from gateway
-
-        Verfies exception throws correctly
-
-
-         */
     }
 }
 
