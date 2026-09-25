@@ -32,9 +32,9 @@ public class ProductGateway {
     private double height;
     private double depth;
     //apparel
-    private int ApparelSize;
+    private int apparelSize;
     //electronics
-    private int Voltage;
+    private int voltage;
 
     private ArrayList<VideoStreaming> supportedStreamingServices;
 
@@ -52,7 +52,9 @@ public class ProductGateway {
                 + " type TEXT,"
                 + " sku TEXT," + " name TEXT," + " basePrice DOUBLE,"
                 + " size INTEGER," + " hasLyrics BOOLEAN,"
-                + " codecs INTEGER," + " hasSubtitles BOOLEAN" + ");";
+                + " codecs INTEGER," + " hasSubtitles BOOLEAN,"
+                + " width DOUBLE," + " height DOUBLE," + " depth DOUBLE,"
+                + " apparelSize INTEGER," + " voltage INTEGER" + ");";
 
         // Establish connection and execute statement
         Connection conn = getConnection();
@@ -64,8 +66,9 @@ public class ProductGateway {
     }
 
     private void insertNewRow() throws DatabaseException {
-        String sql = "INSERT INTO ProductGateway (type, sku, name, basePrice, size, hasLyrics, codecs) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?);";
+        String sql = "INSERT INTO ProductGateway (type, sku, name, basePrice, size, hasLyrics, codecs," +
+                "hasSubtitles, width, height, depth, apparelSize, voltage" + ") " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
         Connection conn = getConnection();
         try (PreparedStatement insert = conn.prepareStatement(sql)) {
@@ -76,6 +79,12 @@ public class ProductGateway {
             insert.setLong(5, size);
             insert.setBoolean(6, hasLyrics);
             insert.setInt(7, calculateBitmask(codecs));
+            insert.setBoolean(8, hasSubtitles);
+            insert.setDouble(9, width);
+            insert.setDouble(10, height);
+            insert.setDouble(11, depth);
+            insert.setInt(12, apparelSize);
+            insert.setInt(13, voltage);
 
             int affectedRows = insert.executeUpdate();
             if (affectedRows > 0) {
@@ -143,6 +152,14 @@ public class ProductGateway {
         return depth;
     }
 
+    public int getApparelSize() {
+        return apparelSize;
+    }
+
+    public int getVoltage() {
+        return voltage;
+    }
+
     /**
      * Create constructor - used to put a new object into the db
      * @param type
@@ -163,7 +180,9 @@ public class ProductGateway {
     //voltage
 
     public ProductGateway(ProductType type, String sku, String name, Double basePrice,
-                          long size, boolean hasLyrics, Set<AudioCodec> codecs, ArrayList<VideoStreaming> supportedStreamingServices) throws DatabaseException {
+                          long size, boolean hasLyrics, Set<AudioCodec> codecs, boolean hasSubtitles,
+                          double width, double height, double depth, int apparelSize,
+                          int voltage, ArrayList<VideoStreaming> supportedStreamingServices) throws DatabaseException {
         this.type = type;
         this.sku = sku;
         this.name = name;
@@ -171,6 +190,12 @@ public class ProductGateway {
         this.size = size;
         this.hasLyrics = hasLyrics;
         this.codecs = codecs;
+        this.hasSubtitles = hasSubtitles;
+        this.width = width;
+        this.height = height;
+        this.depth = depth;
+        this.apparelSize = apparelSize;
+        this.voltage = voltage;
         this.supportedStreamingServices = supportedStreamingServices;
         insertNewRow();
     }
@@ -233,6 +258,12 @@ public class ProductGateway {
         this.size = rs.getLong("size");
         this.hasLyrics = rs.getBoolean("hasLyrics");
         this.codecs = getSupportedCodecsSet(rs.getInt("codecs"));
+        this.hasSubtitles = rs.getBoolean("hasSubtitles");
+        this.width = rs.getDouble("width");
+        this.height = rs.getDouble("height");
+        this.depth = rs.getDouble("depth");
+        this.apparelSize = rs.getInt("apparelSize");
+        this.voltage = rs.getInt("voltage");
     }
 
     private Set<AudioCodec> getSupportedCodecsSet(int mask) {
