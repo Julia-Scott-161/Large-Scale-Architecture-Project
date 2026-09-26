@@ -5,25 +5,23 @@ import org.junit.Test;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
+import java.sql.*;
+import java.util.*;
+
 import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class ProductGatewayTests {
 
+    private static final Logger log = LoggerFactory.getLogger(ProductGatewayTests.class);
     ProductType type = ProductType.VideoStreaming;
     String sku = "000000000001";
     String name = "Test Product";
     double basePrice = 15.99;
     Cost cost = new Cost(basePrice);
-    //other values default to null, zero, or false
     long size = 0;
     boolean hasLyrics = false;
     Set<AudioCodec> codecs = null;
@@ -33,7 +31,6 @@ public class ProductGatewayTests {
     double depth = 0;
     String apparelSize = null;
     String voltage = null;
-    //ArrayList<VideoStreaming> supportedStreamingServices = new ArrayList<>();
     ArrayList<VideoStreaming> supportedStreamingServices = null;
     private static final Connection conn;
 
@@ -136,6 +133,32 @@ public class ProductGatewayTests {
 
             stmt.execute("COMMIT;");
         } catch(SQLException e){
+            fail("SQL Exception" + e.getMessage());
+        }
+    }
+
+    @Test
+    public void SupportedServices() throws DatabaseException {
+        VideoStreaming testVideo1 = new VideoStreaming("123405689112", "Test 1", cost, 0, true);
+        VideoStreaming testVideo2 = new VideoStreaming("123405689113", "Test 2", cost, 0, true);
+        ArrayList<VideoStreaming> supportedServices = new ArrayList<>(List.of(testVideo1, testVideo2));
+
+        ProductGateway testElectronic = new ProductGateway(ProductType.Electronics, "100000700011", "Test Electronic", basePrice,
+                0, false, null, true, 3.6, 6.0, 0.8, null,
+                "UNIVERSAL", supportedServices);
+
+        Set<Long> supportedServiceIds = new HashSet<>();
+        String sql = "SELECT VideoStreamingID FROM SupportedServices "
+                + "WHERE " + "ElectronicsID = ?";
+        try (PreparedStatement select = conn.prepareStatement(sql)) {
+            select.setLong(1, testElectronic.getId());
+            ResultSet results = select.executeQuery();
+            while (results.next()) {
+                supportedServiceIds.add(results.getLong("VideoStreamingId"));
+            }
+            assertEquals(Set.of(testVideo1, testVideo2), supportedServiceIds);
+        }
+        catch (SQLException e) {
             fail("SQL Exception" + e.getMessage());
         }
     }
