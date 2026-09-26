@@ -156,7 +156,7 @@ public class ProductGatewayTests {
             while (results.next()) {
                 supportedServiceIds.add(results.getLong("VideoStreamingId"));
             }
-            assertEquals(Set.of(testVideo1, testVideo2), supportedServiceIds);
+            assertEquals(Set.of(testVideo1.getId(), testVideo2.getId()), supportedServiceIds);
         }
         catch (SQLException e) {
             fail("SQL Exception" + e.getMessage());

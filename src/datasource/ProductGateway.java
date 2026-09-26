@@ -63,6 +63,26 @@ public class ProductGateway {
         }
     }
 
+    private void insertSupportedServices(Connection connection) throws DatabaseException {
+        if (supportedStreamingServices == null) {
+            return;
+        }
+        else {
+            String sql = "INSERT INTO SupportedServices (ElectronicsID, VideoStreamingID) "
+                    + "VALUES (?, ?)";
+            try(PreparedStatement insert = connection.prepareStatement(sql)) {
+                for (VideoStreaming supportedStreaming : supportedStreamingServices) {
+                    insert.setLong(1, this.getId());
+                    insert.setLong(2, supportedStreaming.getId());
+                    insert.execute();
+                }
+            }
+            catch (SQLException e) {
+                throw new DatabaseException(e.getMessage());
+            }
+        }
+    }
+
     private void insertNewRow() throws DatabaseException {
         String sql = "INSERT INTO ProductGateway (type, sku, name, basePrice, size, hasLyrics, codecs," +
                 "hasSubtitles, width, height, depth, apparelSize, voltage" + ") " +
@@ -92,6 +112,7 @@ public class ProductGateway {
                     }
                 }
             }
+            insertSupportedServices(conn);
             assert !conn.isClosed();
         } catch (SQLException e) {
             throw new DatabaseException(e.getMessage());
