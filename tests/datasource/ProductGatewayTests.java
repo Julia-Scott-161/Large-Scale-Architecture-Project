@@ -15,8 +15,6 @@ import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class ProductGatewayTests {
-
-    private static final Logger log = LoggerFactory.getLogger(ProductGatewayTests.class);
     ProductType type = ProductType.VideoStreaming;
     String sku = "000000000001";
     String name = "Test Product";
@@ -176,6 +174,31 @@ public class ProductGatewayTests {
         assert (gateway1.getId() > 0);
         //generated ID should be unique
         assertNotEquals(gateway1.getId(), gateway2.getId());
+    }
+
+    @Test
+    public void findAllRows() throws DatabaseException {
+
+    }
+
+    @Test
+    public void findBySkuPrefix() throws DatabaseException {
+
+    }
+
+    @Test
+    public void findTracksWithLyrics() throws DatabaseException {
+
+    }
+
+    @Test
+    public void findApparelWithSize() throws DatabaseException {
+
+    }
+
+    @Test
+    public void findAllThatSupport() throws DatabaseException {
+
     }
 }
 
