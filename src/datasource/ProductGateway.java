@@ -1,7 +1,6 @@
 package datasource;
 
 import domain.AudioCodec;
-import domain.Cost;
 import domain.VideoStreaming;
 
 import java.sql.*;
@@ -10,7 +9,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
 
-import static datasource.DatabaseRegistry.getConnection;
 
 public class ProductGateway {
 
@@ -19,21 +17,14 @@ public class ProductGateway {
     private String sku;
     private String name;
     private double basePrice;
-    //digital media
     private long size;
     private Boolean hasLyrics;
     private Set<AudioCodec> codecs;
-    //TODO: Add To Table
-    //VideoStreaming
     private boolean hasSubtitles;
-    //TODO - how to store supported services? Was in table as multiple booleans. get supported codecs?
-    //physical media
     private double width;
     private double height;
     private double depth;
-    //apparel
     private String apparelSize;
-    //electronics
     private String voltage;
 
     private ArrayList<VideoStreaming> supportedStreamingServices;
@@ -200,17 +191,17 @@ public class ProductGateway {
         insertNewRow();
     }
 
-    //TODO - now you have to store the many-to-many relationship
-    public void insertSupportedServices(Connection connection) throws SQLException {
-        //Separate Table necessary for many-to-many relationship
-        String supportedServiceSql = "INSERT INTO SupportedServices (ElectronicsID, VideoStreamingID) VALUES (?, ?)";
-        PreparedStatement insertService = connection.prepareStatement(supportedServiceSql);
-        for(VideoStreaming service : supportedStreamingServices){
-            insertService.setLong(1, this.getId());
-            insertService.setLong(2, service.getId());
-            insertService.executeUpdate();
-        }
-    }
+//    //TODO - now you have to store the many-to-many relationship
+//    public void insertSupportedServices(Connection connection) throws SQLException {
+//        //Separate Table necessary for many-to-many relationship
+//        String supportedServiceSql = "INSERT INTO SupportedServices (ElectronicsID, VideoStreamingID) VALUES (?, ?)";
+//        PreparedStatement insertService = connection.prepareStatement(supportedServiceSql);
+//        for(VideoStreaming service : supportedStreamingServices){
+//            insertService.setLong(1, this.getId());
+//            insertService.setLong(2, service.getId());
+//            insertService.executeUpdate();
+//        }
+//    }
 
     /**
      * A finder constructor that will be used by findAndBuild only

@@ -16,7 +16,7 @@ public class Electronics extends PhysicalProduct {
     }
 
     public Electronics(String sku, String name, Cost basePrice, double width, double height, double depth, String voltage) throws DatabaseException {
-        ProductGateway gateway = new ProductGateway(ProductType.Apparel, sku, name, basePrice.dollars(), 0, false, null,
+        ProductGateway gateway = new ProductGateway(ProductType.Electronics, sku, name, basePrice.dollars(), 0, false, null,
                 false, width, height, depth, null, voltage, null);
         assignId(gateway.getId());
         getDataOutOfGateway(gateway);

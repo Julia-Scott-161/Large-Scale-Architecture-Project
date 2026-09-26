@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -111,6 +112,12 @@ public class ProductGatewayTests {
         conn.rollback();
     }
 
+    /**
+     * Tests the CreateTable() function in ProductGateway
+        * Checks that there is a table with the name "ProductGateway"
+        * Checks that there is a table with the name "SupportedServices"
+     * @throws DatabaseException
+     */
     @Test
     @Disabled("Fix and run this only when you change the structure of the table")
     public void canCreateTable() throws DatabaseException {
@@ -120,16 +127,13 @@ public class ProductGatewayTests {
             // Create the table
             ResultSet tables = stmt.executeQuery("SELECT name FROM sqlite_master " + "WHERE " + "type='table' AND name NOT LIKE 'sqlite_%'");
 
-            boolean tableExists = false;
-            while (tables.next() && !tableExists)
-            {
-                String tableName = tables.getString("name");
-                if (tableName.equals("ProductGateway"))
-                {
-                    tableExists = true;
-                }
+            Set<String> tableNames = new HashSet<>();
+            while (tables.next()) {
+                tableNames.add(tables.getString("name"));
             }
-            assert (tableExists);
+            assertTrue(tableNames.contains("ProductGateway"));
+            assertTrue(tableNames.contains("SupportedServices"));
+
             stmt.execute("COMMIT;");
         } catch(SQLException e){
             fail("SQL Exception" + e.getMessage());
@@ -149,6 +153,31 @@ public class ProductGatewayTests {
         assert (gateway1.getId() > 0);
         //generated ID should be unique
         assertNotEquals(gateway1.getId(), gateway2.getId());
+    }
+
+    /** Test formated to match the canCreateTable() test that was provided in class
+     * Creates a table and tests that the SupportedServices table was set up
+     * correctly and works as intended.
+     * @throws DatabaseException
+     */
+    @Test
+    @Disabled("Run this only when you run the CanCreateTable() test")
+    public void canCreateSupportedServicesTable() throws DatabaseException {
+        try (Statement stmt = conn.createStatement()) {
+            stmt.execute("DROP TABLE IF EXISTS SupportedServices");
+        }
+        catch (SQLException e) {
+            fail("Could not drop table" + e.getMessage());
+        }
+        ProductGateway.createTable();
+        try (Statement stmt = conn.createStatement()) {
+            ResultSet table = stmt.executeQuery("SELECT name From sqlite_master" +
+                    " WHERE " + "type='table' AND name = 'SupportedServices'");
+            assertTrue(table.next());
+        }
+        catch(SQLException e) {
+            fail("SQL Exception" + e.getMessage());
+        }
     }
 }
 
