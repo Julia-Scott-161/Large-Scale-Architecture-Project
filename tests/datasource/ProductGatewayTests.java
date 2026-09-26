@@ -120,7 +120,7 @@ public class ProductGatewayTests {
      */
     @Test
     @Disabled("Fix and run this only when you change the structure of the table")
-    public void canCreateTable() throws DatabaseException {
+    public void canCreateProductGatewayTable() throws DatabaseException {
         ProductGateway.createTable();
         try(Statement stmt = conn.createStatement())
         {
@@ -153,31 +153,6 @@ public class ProductGatewayTests {
         assert (gateway1.getId() > 0);
         //generated ID should be unique
         assertNotEquals(gateway1.getId(), gateway2.getId());
-    }
-
-    /** Test formated to match the canCreateTable() test that was provided in class
-     * Creates a table and tests that the SupportedServices table was set up
-     * correctly and works as intended.
-     * @throws DatabaseException
-     */
-    @Test
-    @Disabled("Run this only when you run the CanCreateTable() test")
-    public void canCreateSupportedServicesTable() throws DatabaseException {
-        try (Statement stmt = conn.createStatement()) {
-            stmt.execute("DROP TABLE IF EXISTS SupportedServices");
-        }
-        catch (SQLException e) {
-            fail("Could not drop table" + e.getMessage());
-        }
-        ProductGateway.createTable();
-        try (Statement stmt = conn.createStatement()) {
-            ResultSet table = stmt.executeQuery("SELECT name From sqlite_master" +
-                    " WHERE " + "type='table' AND name = 'SupportedServices'");
-            assertTrue(table.next());
-        }
-        catch(SQLException e) {
-            fail("SQL Exception" + e.getMessage());
-        }
     }
 }
 

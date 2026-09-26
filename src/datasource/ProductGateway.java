@@ -39,18 +39,25 @@ public class ProductGateway {
     //right click, "change signature" it'll refactor and change everything
     static void createTable() throws DatabaseException {
 
-        String sql = "CREATE TABLE IF NOT EXISTS ProductGateway (" + " id INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + " type TEXT,"
-                + " sku TEXT," + " name TEXT," + " basePrice DOUBLE,"
+        String productSql = "CREATE TABLE IF NOT EXISTS ProductGateway (" + " id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + " type TEXT  NOT NULL,"
+                + " sku TEXT NOT NULL," + " name TEXT NOT NULL," + " basePrice DOUBLE NOT NULL,"
                 + " size INTEGER," + " hasLyrics BOOLEAN,"
                 + " codecs INTEGER," + " hasSubtitles BOOLEAN,"
                 + " width DOUBLE," + " height DOUBLE," + " depth DOUBLE,"
                 + " apparelSize TEXT," + " voltage TEXT" + ");";
 
+        String servicesSql = "CREATE TABLE IF NOT EXISTS SupportedServices ("
+                + " ElectronicsID INTEGER NOT NULL," + " VideoStreamingID INTEGER NOT NULL,"
+                + " PRIMARY KEY (ElectronicsID, VideoStreamingID),"
+                + " FOREIGN KEY (ElectronicsID) REFERENCES ProductGateway(id),"
+                + " FOREIGN KEY (VideoStreamingID) REFERENCES ProductGateway(id)" + ");";
+
         // Establish connection and execute statement
         Connection conn = getConnection();
         try (Statement stmt = conn.createStatement()) {
-            stmt.execute(sql);
+            stmt.execute(productSql);
+            stmt.execute(servicesSql);
         } catch (SQLException e) {
             throw new DatabaseException(e.getMessage());
         }
